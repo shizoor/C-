@@ -98,16 +98,16 @@ else {	//cout << "operator" << endl;
 
 }
 
+if (thestack.size() > 1){
 
-/*
-cout << "vector (thestack) contents : " << endl;
+	cout << "The stack has more than one value, contents : " << endl;
 
-for(i=0; i<thestack.size(); i++){
- 	cout.precision(17);	
-	cout  <<  thestack.at(i) << endl;
+	for(i=0; i<thestack.size(); i++){
+ 		cout.precision(17);	
+		cout  <<  thestack.at(i) << endl;
+	}
+
 }
-*/
-
 return thestack.at(0);
 
 }
