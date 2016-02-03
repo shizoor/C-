@@ -50,51 +50,51 @@ for(i=0; i<tokenstream.size(); i++){
 //Get token and check if a number or operator
 
 for(i=0; i<tokenstream.size(); i++){
-
-number = strtod(tokenstream.at(i).c_str(), &numtest);
-
-if (!(*numtest) ){
-	//cout << "numeral" << endl;
-	thestack.push_back(number);
-}
-else {	//cout << "operator" << endl;
-	if (thestack.size()<2){cout<<"not enough numerals"<<endl;}
-	else{
-	secondnum = thestack.back();
-	thestack.pop_back();
-	firstnum = thestack.back();
-	thestack.pop_back();
-	operatorchar = tokenstream.at(i)[0];
 	
-	switch (operatorchar){
-        case '+':
-        total = firstnum+secondnum;
-	//cout << firstnum << "+" << secondnum << "=" << total << endl; 
-        break;
-        case '*':
-        total = firstnum*secondnum;
-	//cout << firstnum << "*" << secondnum << "=" << total << endl;
-        break;
-        case '/':
-        total = firstnum/secondnum;
-	//cout << firstnum << "/" << secondnum << "=" << total << endl;
-        break;
-        case '-':
-        total = firstnum-secondnum;
-	//cout << firstnum << "-" << secondnum << "=" << total << endl;
-        break;
-	case '^':
-	total = pow(firstnum, secondnum);
-	//cout << firstnum << "^" << secondnum << "=" << total << endl;
-	break;
-        default:
-        cout << "invalid operator";
-        break;
-        }
+	number = strtod(tokenstream.at(i).c_str(), &numtest);
+	
+	if (!(*numtest) ){
+		//cout << "numeral" << endl;
+		thestack.push_back(number);
+	}
+	else {	//cout << "operator" << endl;
+		if (thestack.size()<2){cout<<"not enough numerals"<<endl;}
+		else{
+		secondnum = thestack.back();
+		thestack.pop_back();
+		firstnum = thestack.back();
+		thestack.pop_back();
+		operatorchar = tokenstream.at(i)[0];
+	
+		switch (operatorchar){
+        	case '+':
+        	total = firstnum+secondnum;
+		//cout << firstnum << "+" << secondnum << "=" << total << endl; 
+        	break;
+        	case '*':
+        	total = firstnum*secondnum;
+		//cout << firstnum << "*" << secondnum << "=" << total << endl;
+		break;
+        	case '/':
+        	total = firstnum/secondnum;
+		//cout << firstnum << "/" << secondnum << "=" << total << endl;
+        	break;
+        	case '-':
+        	total = firstnum-secondnum;
+		//cout << firstnum << "-" << secondnum << "=" << total << endl;
+        	break;
+		case '^':
+		total = pow(firstnum, secondnum);
+		//cout << firstnum << "^" << secondnum << "=" << total << endl;
+		break;
+        	default:
+        	cout << "invalid operator";
+        	break;
+        	}
         thestack.push_back(total);
 	
 	}
-}
+	}
 
 }
 
