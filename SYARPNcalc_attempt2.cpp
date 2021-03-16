@@ -8,12 +8,13 @@
 #include <vector>
 #include <sstream>
 
+
 using namespace std;
 
 bool checkparenthesismatch(string inputstring) {
 	int count = 0;
 	int i = 0;
-	for (i == 0; i < inputstring.length(); i++) {
+	for (i = 0; i < inputstring.length(); i++) {
 		switch (inputstring[i])
 		{
 		case '(': count++;
@@ -38,14 +39,16 @@ string getassociativity(string inputoperator) {
 int getprecedence(char inputoperator)
 {
 	int precedence = 0;
-	switch (inputoperator){
+	switch (inputoperator) {
 	case '^':precedence = 4;
 		break;
-	case '*' : precedence = 3;
+	case '*': precedence = 3;
 		break;
-	case '/' : precedence = 3;
+	case '/': precedence = 3;
 		break;
 	case '+': precedence = 2;
+		break;
+	case '-': precedence = 2;
 		break;
 
 	}
@@ -54,14 +57,14 @@ int getprecedence(char inputoperator)
 
 bool isanumeral(char inputchar) {
 	bool isanumeral = false;
-	if ((inputchar > ('0'-1) && inputchar < ('9'+1)) || inputchar == '.')isanumeral = true;   //Yes, a full stop is a number, shut up.
+	if ((inputchar > ('0' - 1) && inputchar < ('9' + 1)) || inputchar == '.')isanumeral = true;   //Treats a full stop as a number
 	return isanumeral;
 }
 
 
 bool isanoperator(char inputchar) {
 	bool isanoperator = false;
-	if ((inputchar == '+') || (inputchar == '-') || (inputchar == '/') || (inputchar == '*') || (inputchar == '^')  || (inputchar == '(') || (inputchar == ')'))isanoperator = true;
+	if ((inputchar == '+') || (inputchar == '-') || (inputchar == '/') || (inputchar == '*') || (inputchar == '^') || (inputchar == '(') || (inputchar == ')'))isanoperator = true;
 	return isanoperator;
 }
 
@@ -85,8 +88,8 @@ bool isaspace(char inputchar) {
 
 string syaprocess(string inputstring) {
 	//inputstring.push_back('0');
-	int i=0;
-	int j=0;
+	int i = 0;
+	int j = 0;
 	int strpoint;
 	vector<string> tokenstream;
 	vector<string> operatorstack;
@@ -97,11 +100,11 @@ string syaprocess(string inputstring) {
 	//cout << "split input string into tokens" << endl;
 	for (i = 0; i < inputstring.size(); i++) {
 		if (isanumeral(inputstring[i])) {
-			tokenstream.resize(tokenstream.size()+1);
+			tokenstream.resize(tokenstream.size() + 1);
 			strpoint = 0;
 			while (isanumeral(inputstring[i])) {
-				
-				tokenstream.at(j).resize(strpoint+1);
+
+				tokenstream.at(j).resize(strpoint + 1);
 				tokenstream.at(j)[strpoint] = inputstring[i];
 				//cout << "appending : " << inputstring[i] <<  "i = " << i << " j = "  << j << endl;
 				strpoint++;
@@ -109,52 +112,53 @@ string syaprocess(string inputstring) {
 			}
 			j++;
 		}
-		
+
 		if (isanoperator(inputstring[i]) && !(isaleftparenthesis(inputstring[i]) || isarightparenthesis(inputstring[i]))) {
-			tokenstream.resize(tokenstream.size()+1);
+			tokenstream.resize(tokenstream.size() + 1);
 			tokenstream.at(j).push_back(inputstring[i]);
 			//cout << "operator\n";
 			j++;
 		}
 
 		if (isaleftparenthesis(inputstring[i])) {
-			tokenstream.resize(tokenstream.size()+1);
+			tokenstream.resize(tokenstream.size() + 1);
 			tokenstream.at(j).push_back(inputstring[i]);
 			//cout << "left bracket\n";
 			j++;
 		}
 
 		if (isarightparenthesis(inputstring[i])) {
-			tokenstream.resize(tokenstream.size()+1);
+			tokenstream.resize(tokenstream.size() + 1);
 			tokenstream.at(j).push_back(inputstring[i]);
 			//cout << "Right bracket\n";
 			j++;
 		}
 
 
-		if (!isaleftparenthesis(inputstring[i]) && !isarightparenthesis(inputstring[i]) && !isanumeral(inputstring[i]) && !isanoperator(inputstring[i]) && !isaspace(inputstring[i])) { 
+		if (!isaleftparenthesis(inputstring[i]) && !isarightparenthesis(inputstring[i]) && !isanumeral(inputstring[i]) && !isanoperator(inputstring[i]) && !isaspace(inputstring[i])) {
 			//cout << "That's not anything, breaking\n";
-			break; }
-	}	
+			break;
+		}
+	}
 
 	//cout << "tokenstream : ";
 	//for (i = 0; i < tokenstream.size(); i++) { cout << tokenstream.at(i) << endl; }
 	//cout << "end of tokenstream\n";// debug
-		
+
 
 	//token splitting working, now do shunting yard.    
 
 	for (i = 0; i < tokenstream.size(); i++) {
-		if (isanumeral(tokenstream.at(i)[0])) { 
+		if (isanumeral(tokenstream.at(i)[0])) {
 			outputqueue.resize(outputqueue.size() + 1);
 			outputqueue.push_back(tokenstream.at(i));   // if the token is a number, push it to the output queue
 			//cout << "numeral, pushing to output queue: " << tokenstream.at(i) << endl;
 		}
-		
+
 		if (isanoperator(tokenstream.at(i)[0]) && !isaleftparenthesis(tokenstream.at(i)[0]) && !isarightparenthesis(tokenstream.at(i)[0])) {
 			//cout << "token " << tokenstream.at(i) <<  "is an operator.  Processing operator stack : " << endl;
-			while (((!operatorstack.empty() && isanoperator(operatorstack.at(0)[0])) && ((getprecedence(operatorstack.at(0)[0]) > getprecedence(tokenstream.at(i)[0]) || (getprecedence(operatorstack.at(0)[0]) == getprecedence(tokenstream.at(i)[0]) && getassociativity(tokenstream.at(i)) == "left") ))) && !isaleftparenthesis(operatorstack.back()[0])) {
-				
+			while (((!operatorstack.empty() && isanoperator(operatorstack.at(0)[0])) && ((getprecedence(operatorstack.at(0)[0]) > getprecedence(tokenstream.at(i)[0]) || (getprecedence(operatorstack.at(0)[0]) == getprecedence(tokenstream.at(i)[0]) && getassociativity(tokenstream.at(i)) == "left")))) && !isaleftparenthesis(operatorstack.back()[0])) {
+
 				outputqueue.push_back(operatorstack.back());
 				//pushed to the output queue
 				operatorstack.pop_back();
@@ -163,14 +167,15 @@ string syaprocess(string inputstring) {
 			//pushed to the operator stack
 			operatorstack.push_back(tokenstream.at(i));
 		}
-		
-		if (isaleftparenthesis(tokenstream.at(i)[0])) { 
+
+		if (isaleftparenthesis(tokenstream.at(i)[0])) {
 			//pushed to the operator stack
-			operatorstack.push_back(tokenstream.at(i)); }
+			operatorstack.push_back(tokenstream.at(i));
+		}
 
 		if (isarightparenthesis(tokenstream.at(i)[0]) && !operatorstack.empty()) {
 			//cout << "Right parenthesis .. emptying operator stack onto the outputqueue \n";
-			while (!operatorstack.empty() && !isaleftparenthesis(operatorstack.back()[0])){   //implement check for mismatched parenthesis
+			while (!operatorstack.empty() && !isaleftparenthesis(operatorstack.back()[0])) {   //implement check for mismatched parenthesis
 				//cout << "pushing " << operatorstack.back() << "onto output queue\n";
 				outputqueue.push_back(operatorstack.back());
 				operatorstack.pop_back();
@@ -183,10 +188,10 @@ string syaprocess(string inputstring) {
 		}
 
 	}
-	
+
 	while (!operatorstack.empty()) { outputqueue.push_back(operatorstack.back()); operatorstack.pop_back(); }
-	
-	for (i = 0; i <outputqueue.size(); i++)
+
+	for (i = 0; i < outputqueue.size(); i++)
 	{
 		//cout << outputqueue.at(i) << endl;
 		outputstring.append(outputqueue.at(i));
@@ -212,12 +217,12 @@ double rpnprocess(string inputstring) {
 	string nothing;  //For debugging
 	char* numtest;
 
-	
+
 	starti = 0;
 
 	//Split the input into tokens
 
-	//cout << "Splitting this into tokens : " << inputstring;
+	//cout << "Splitting this into tokens : " << inputstring << endl;
 
 	istringstream iss(inputstring);
 	do {
@@ -307,7 +312,7 @@ int main() {
 	string inputstring;
 	int i = 0;
 	cout.precision(16);
-	while (!(inputstring=="quit")) {
+	while (!(inputstring == "quit")) {
 		cout << ">>";
 		getline(cin, inputstring);
 		if (checkparenthesismatch(inputstring)) {
