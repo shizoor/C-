@@ -1,7 +1,4 @@
 <html>
-<head>
-<title>OpenGL files</title>
-</head>
 <body>
 <h1>
 OpenGL files
